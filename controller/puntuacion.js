@@ -11,6 +11,21 @@ const schemaInsertar= Joi.object({
 
 
 async function getAll(req, res) {
+    if(req.query.mayor){
+        try { // si me han pasado parametros en la query
+            let puntuaciones = await Puntuacion.find({puntuacion: {$gt: req.query.mayor}});
+            res.status(200).json({ accion: 'get mayor que', datos: puntuaciones })
+        } catch (err) {
+            res.status(500).json({ accion: 'get mayor que', mensaje: 'error al obtener las puntuaciones mayor a un valor dado' })
+        }
+    }else{ // no me han pasado parametros en la query
+        try {
+            let puntuaciones = await Puntuacion.find();
+            res.status(200).json({ accion: 'get all', datos: puntuaciones })
+        } catch (err) {
+            res.status(500).json({ accion: 'get all', mensaje: 'error al obtener las puntuaciones' })
+        }
+    }
     //callbacks
     /* Puntuacion.find({}).exec( (err, puntuaciones)=>{
          if(err){
@@ -25,12 +40,7 @@ async function getAll(req, res) {
         .catch(err => res.status(500).send({accion:'get all', mensaje:'error al obtener la puntuacion'}) )
     */
     // async await
-    try {
-        let puntuaciones = await Puntuacion.find();
-        res.status(200).json({ accion: 'get all', datos: puntuaciones })
-    } catch (err) {
-        res.status(500).json({ accion: 'get all', mensaje: 'error al obtener las puntuaciones' })
-    }
+    
 
 }
 
@@ -58,7 +68,7 @@ async function insert(req, res) {
 
     try {
         //await schemaInsertar.validateAsync(puntuacion.puntuacion)
-        await schemaInsertar.validateAsync(puntuacion)
+        //await schemaInsertar.validateAsync(puntuacion)
     } catch (err) {
         res.status(406).json({ accion: 'save', mensaje: 'error validar la puntuacion' })
     }

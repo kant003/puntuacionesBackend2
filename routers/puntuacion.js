@@ -12,8 +12,8 @@ router.get('/', controller.getAll)
 
 // obtener una puntuacion por id
 // GET http://localhost:5300/puntuacion/5e9f8f8f8f8f8f8f8f8f8f8
-router.get('/:id', controller.getById)
 
+router.get('/:id', controller.getById)
 // Solución ejercicio 13
 router.get('/puntuacionesCero', controller.getPuntuacionesCero)
 
